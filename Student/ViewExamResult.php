@@ -3,7 +3,7 @@ session_start();
 
 //Including Files 
 include_once '../classes/dbcon.php';
-$str=@mysql_query("SELECT * FROM upload");
+$str=@mysql_query("SELECT * FROM uploads");
 
 ?>
 
@@ -48,13 +48,14 @@ $str=@mysql_query("SELECT * FROM upload");
                                             <tr>
                                             <?php
                                                 while($row = @mysql_fetch_array($str)){
-                                                $id=$row['id'];
-                                                echo "<tr>";
-                                                    echo "<td>" . $row['name'] . "</td>";                                             
-                                                    echo "<td>" . $row['size'] . "</td>";
-                                                    //echo "<td>" ."<a href='' target'_blank'>" .$row['name'] ."</a>". "</td>";
-													echo "<td>" ."<a href='../download/SCS1106.pdf'>" .$row['name'] ."</a>". "</td>";
-                                                echo "</tr>";
+                                                    $id=$row['id'];
+                                                    $file_name=$row['file'];
+                                                    echo "<tr>";
+                                                        echo "<td>" . $row['subject'] . "</td>";
+                                                        echo "<td>" . $row['size'] . "</td>";
+                                                        //echo "<td>" ."<a href='' target'_blank'>" .$row['name'] ."</a>". "</td>";
+                                                        echo "<td>" ."<a href='../download/$file_name'>Result_Sheet</a>". "</td>";
+                                                    echo "</tr>";
                                                 }
                                                 ?>
                                                 <td><a href="uploads/<?php echo $row['file'] ?>" target="_blank">view file</a></td>

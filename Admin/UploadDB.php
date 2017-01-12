@@ -5,8 +5,10 @@ include_once '../classes/dbcon.php';
 if(isset($_POST['upload']))
 {
 
-    $file = rand(1000,100000)."-".$_FILES['file']['name'];
+    $file = $_FILES['file']['name'];
     $file_loc = $_FILES['file']['tmp_name'];
+
+    $subject = $_POST['sub_name'];
     $file_size = $_FILES['file']['size'];
     $file_type = $_FILES['file']['type'];
     $folder="../download/";
@@ -23,12 +25,12 @@ if(isset($_POST['upload']))
 
     if(move_uploaded_file($file_loc,$folder.$final_file))
     {
-        $sql="INSERT INTO uploads(file,type,size) VALUES('$final_file','$file_type','$new_size')";
+        $sql="INSERT INTO uploads(subject,file,type,size) VALUES('$subject','$final_file','$file_type','$new_size')";
         mysql_query($sql);
         ?>
         <script>
             alert('successfully uploaded');
-            window.location.href='index.php?success';
+            window.location.href='UploadResult.php';
         </script>
         <?php
     }
