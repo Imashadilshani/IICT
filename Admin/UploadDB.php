@@ -1,34 +1,44 @@
+
+
 <?php
 include_once '../classes/dbcon.php';
 if(isset($_POST['upload']))
 {
-$username=$_POST['username'];
-$email=$_POST['email'];
-$course_category=$_POST['course_category'];
-$year = $_POST['year'];
-$fileName = $_FILES['userfile']['name'];
-$tmpName  = $_FILES['userfile']['tmp_name'];
-$fileSize = $_FILES['userfile']['size'];
-$fileType = $_FILES['userfile']['type'];
 
-$fp      = fopen($tmpName, 'r');
-$content = fread($fp, filesize($tmpName));
-$content = addslashes($content);
-fclose($fp);
+    $file = rand(1000,100000)."-".$_FILES['file']['name'];
+    $file_loc = $_FILES['file']['tmp_name'];
+    $file_size = $_FILES['file']['size'];
+    $file_type = $_FILES['file']['type'];
+    $folder="../download/";
 
-if(!get_magic_quotes_gpc())
-{
-    $fileName = addslashes($fileName);
+    // new file size in KB
+    $new_size = $file_size/1024;
+    // new file size in KB
+
+    // make file name in lower case
+    $new_file_name = strtolower($file);
+    // make file name in lower case
+
+    $final_file=str_replace(' ','-',$new_file_name);
+
+    if(move_uploaded_file($file_loc,$folder.$final_file))
+    {
+        $sql="INSERT INTO uploads(file,type,size) VALUES('$final_file','$file_type','$new_size')";
+        mysql_query($sql);
+        ?>
+        <script>
+            alert('successfully uploaded');
+            window.location.href='index.php?success';
+        </script>
+        <?php
+    }
+    else
+    {
+        ?>
+        <script>
+            alert('error while uploading file');
+        </script>
+        <?php
+    }
 }
-//include 'library/config.php';
-//include 'library/opendb.php';
-
-
-//$query = "INSERT INTO upload (course_category,year,sub_name,name, size, content ) VALUES ('".$course_category."','".$year."','".$sub_name."','$fileName', '$fileSize', '$content')";
-
-//mysql_query($query) or die('Error, query failed'); 
-//include 'library/closedb.php';
-
-//echo "<br>File $fileName uploaded<br>";
-} 
 ?>
